@@ -23,13 +23,12 @@ function App() {
 
   function handleNewToDoList(newName) {
     const updateData = async () => {
-      try {
-        const newListData = { name: newName };
-        await axios.post("/api/lists", newListData);
-        await reloadData();
-      } catch (error) {
-        console.error("Failed to add new to-do list:", error);
-      }
+      const newListData = {
+        name: newName,
+      };
+
+      await axios.post(`/api/lists`, newListData);
+      reloadData().catch(console.error);
     };
     updateData();
   }

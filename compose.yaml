@@ -10,14 +10,14 @@ services:
       - frontend
 
   frontend:
-    image: "node:22"
-    user: "node"
-    working_dir: /home/node/app
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/home/node/app
     environment:
       - NODE_ENV=production
       - WDS_SOCKET_PORT=0
-    volumes:
-      - ./frontend:/home/node/app
     expose:
       - "3000"
     command: "npm start"
