@@ -1,57 +1,72 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
-import LisToDoLists from "./ListToDoLists";
-import ToDoLists from "./ToDoLists";
+import ListToDoList from "./ListToDoList";
+import ToDoList from "./ToDoList";
 
 function App() {
   const [listSummaries, setListSummaries] = useState(null);
   const [selectedList, setSelectedList] = useState(null);
 
+  // Fetch data when the component mounts
   useEffect(() => {
     reloadData().catch(console.error);
   }, []);
 
+  // Function to reload data from the API
   async function reloadData() {
-    const response = await axios.get("/api/lists");
-    const data = await response.data;
-    setListSummaries(response.data);
+    try {
+      const response = await axios.get("/api/lists");
+      setListSummaries(response.data);
+    } catch (error) {
+      console.error("Failed to fetch list summaries:", error);
+    }
   }
 
+  // Handle adding a new to-do list
   function handleNewToDoList(newName) {
     const updateData = async () => {
-      const newListData = {
-        name: newName,
-      };
-
-      await axios.post("/api/lists", newListData);
-      reloadData().catch(console.error);
+      try {
+        const newListData = { name: newName };
+        await axios.post("/api/lists", newListData);
+        await reloadData();
+      } catch (error) {
+        console.error("Failed to add new to-do list:", error);
+      }
     };
     updateData();
   }
 
+  // Handle deleting a to-do list
   function handleDeleteToDoList(id) {
     const updateData = async () => {
-      await axios.delete(`/api/lists/${id}`);
-      reloadData().catch(console.error);
+      try {
+        await axios.delete(`/api/lists/${id}`);
+        await reloadData();
+      } catch (error) {
+        console.error("Failed to delete to-do list:", error);
+      }
     };
     updateData();
   }
 
+  // Handle selecting a specific to-do list
   function handleSelectList(id) {
-    console.log("Selecting item", id);
-    setSelectedItem(id);
+    console.log("Selecting list", id);
+    setSelectedList(id);
   }
 
+  // Handle going back to the list view
   function backToList() {
     setSelectedList(null);
     reloadData().catch(console.error);
   }
 
-  if (setSelectedItem === null) {
+  // Render the list of to-do lists or a specific to-do list
+  if (selectedList === null) {
     return (
       <div className="App">
-        <ListToDoLists
+        <ListToDoList
           listSummaries={listSummaries}
           handleSelectList={handleSelectList}
           handleNewToDoList={handleNewToDoList}
@@ -62,7 +77,7 @@ function App() {
   } else {
     return (
       <div className="App">
-        <ToDoLists listId={selectedItem} handleBackButton={backToList} />
+        <ToDoList listId={selectedList} handleBackButton={backToList} />
       </div>
     );
   }

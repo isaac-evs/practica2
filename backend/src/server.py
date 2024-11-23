@@ -1,4 +1,4 @@
-from test.test_xml_etree_c import cET
+from xml.etree.ElementTree import ElementTree as cET
 from contextlib import asynccontextmanager
 from datetime import datetime
 import os
@@ -74,8 +74,8 @@ class NewItemResponse(BaseModel):
     id: str
     label: str
 
-@app.post("/api/lists/{list_id}/items", status_code=status.HTTP_2O1_CREATED)
-async def create_item(list_id: str, item_id: str) -> ToDoList:
+@app.post("/api/lists/{list_id}/items", status_code=status.HTTP_201_CREATED,)
+async def create_item(list_id: str, new_item: NewItem) -> ToDoList:
     return await app.todo_dal.create_item(list_id, new_item.label)
 
 @app.delete("/api/lists/{list_id}/items/{item_id}")
@@ -107,7 +107,7 @@ async def get_dummy () -> DummyResponse:
 def main(ars=sys.argv[1:]):
     try:
         uvicorn.run("server:app", host="0.0.0.0", port=3001, reload=DEBUG)
-    except KeyboardInput:
+    except KeyboardInterrupt:
         pass
 
 if __name__ == "__main__":
