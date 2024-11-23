@@ -25,6 +25,16 @@ git clone https://github.com/isaac-evs/practica2.git
 cd practica2
 ```
 
+Add your own .env file with MongoDB conenction
+
+```bash
+touch .env
+```
+
+insert in the file: 
+
+MONGODB_URI = [your URI]
+
 Build and Run the App
 
 ```bash
