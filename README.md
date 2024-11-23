@@ -31,9 +31,9 @@ Add your own .env file with MongoDB conenction
 touch .env
 ```
 
-insert in the file: 
+Insert in the file: 
 
-MONGODB_URI = [your URI]
+- MONGODB_URI = [your URI]
 
 Build and Run the App
 
