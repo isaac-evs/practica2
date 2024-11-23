@@ -19,7 +19,7 @@ https://docs.docker.com/compose/install/
 Clone the repository 
 
 ```bash
-git clone https://github.com/your-repo/your-project.git](https://github.com/isaac-evs/practica2.git
+git clone https://github.com/isaac-evs/practica2.git
 ```
 ```bash
 cd practica2
