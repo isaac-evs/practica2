@@ -89,7 +89,7 @@ class ToDoDAL:
         session = None,
     ) -> ToDoList | None:
         result = await self._todo_collection.find_one_and_update(
-            {"id": ObjectId(id)},
+            {"_id": ObjectId(id)},
             {
                 "$push": {
                     "items": {
@@ -104,6 +104,7 @@ class ToDoDAL:
         )
         if result:
             return ToDoList.from_doc(result)
+        return None
 
     async def set_checked_state(
 
@@ -121,6 +122,7 @@ class ToDoDAL:
         )
         if result:
             return ToDoList.from_doc(result)
+        return None
 
     async def delete_item(
         self,
@@ -136,3 +138,4 @@ class ToDoDAL:
         )
         if result:
             return ToDoList.from_doc(result)
+        return None
