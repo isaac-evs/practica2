@@ -6,64 +6,49 @@ import ToDoList from "./ToDoList";
 
 function App() {
   const [listSummaries, setListSummaries] = useState(null);
-  const [selectedList, setSelectedList] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
 
-  // Fetch data when the component mounts
   useEffect(() => {
     reloadData().catch(console.error);
   }, []);
 
-  // Function to reload data from the API
   async function reloadData() {
-    try {
-      const response = await axios.get("/api/lists");
-      setListSummaries(response.data);
-    } catch (error) {
-      console.error("Failed to fetch list summaries:", error);
-    }
+    const response = await axios.get("/api/lists");
+    const data = await response.data;
+    setListSummaries(data);
   }
 
-  // Handle adding a new to-do list
   function handleNewToDoList(newName) {
     const updateData = async () => {
-      try {
-        const newListData = { name: newName };
-        await axios.post("/api/lists", newListData);
-        await reloadData();
-      } catch (error) {
-        console.error("Failed to add new to-do list:", error);
-      }
+      const newListData = {
+        name: newName,
+      };
+
+      await axios.post("/api/lists", newListData);
+      reloadData().catch(console.error);
     };
     updateData();
   }
 
-  // Handle deleting a to-do list
   function handleDeleteToDoList(id) {
     const updateData = async () => {
-      try {
-        await axios.delete(`/api/lists/${id}`);
-        await reloadData();
-      } catch (error) {
-        console.error("Failed to delete to-do list:", error);
-      }
+      await axios.delete("/api/lists/${id}");
+      reloadData().catch(console.error);
     };
     updateData();
   }
 
-  // Handle selecting a specific to-do list
   function handleSelectList(id) {
-    console.log("Selecting list", id);
-    setSelectedList(id);
+    console.log("Selecting item", id);
+    setSelectedItem(id);
   }
 
-  // Handle going back to the list view
   function backToList() {
-    setSelectedList(null);
+    setSelectedItem(null);
     reloadData().catch(console.error);
   }
 
-  // Render the list of to-do lists or a specific to-do list
-  if (selectedList === null) {
+  if (setSelectedItem === null) {
     return (
       <div className="App">
         <ListToDoList
@@ -77,7 +62,7 @@ function App() {
   } else {
     return (
       <div className="App">
-        <ToDoList listId={selectedList} handleBackButton={backToList} />
+        <ToDoList listId={selectedItem} handleBackButton={backToList} />
       </div>
     );
   }
