@@ -14,9 +14,9 @@ https://docs.docker.com/get-docker/
 If you’re using Docker CLI without the integrated docker compose plugin, install Docker Compose:
 https://docs.docker.com/compose/install/
 
-### Getting Started
+## Getting Started
 
-Clone the repository 
+### Clone the repository 
 
 ```bash
 git clone https://github.com/isaac-evs/practica2.git
@@ -25,7 +25,7 @@ git clone https://github.com/isaac-evs/practica2.git
 cd practica2
 ```
 
-Add your own .env file with MongoDB conenction
+### Add your own .env file with MongoDB conenction
 
 ```bash
 touch .env
@@ -35,7 +35,7 @@ Insert in the file:
 
 - MONGODB_URI = [your URI]
 
-Build and Run the App
+### Build and Run the App
 
 ```bash
 docker-compose pull
