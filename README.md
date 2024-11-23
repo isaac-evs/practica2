@@ -6,11 +6,11 @@ This project is a simple to-do app based in FastAPI, REAC an MongoDB. It is inte
 
 Before running this app, ensure the following tools are installed on your system:
 
-	1.	Docker:
+1.	Docker:
 Install Docker following the instructions for your operating system:
 https://docs.docker.com/get-docker/
 
-	2.	Docker Compose:
+2.	Docker Compose:
 If you’re using Docker CLI without the integrated docker compose plugin, install Docker Compose:
 https://docs.docker.com/compose/install/
 
