@@ -40,7 +40,7 @@ app = FastAPI(lifespan=lifespan, debug = DEBUG)
 
 # API endpoints
 
-@app.get("api/lists")
+@app.get("/api/lists")
 async def get_all_lists() -> list[ListSummary]:
     return [i async for i in app.todo_dal.list_todo_lists()]
 

@@ -13,32 +13,41 @@ function App() {
   }, []);
 
   async function reloadData() {
-    const response = await axios.get("/api/lists");
-    const data = await response.data;
-    setListSummaries(data);
+    try {
+      const response = await axios.get("/api/lists");
+      setListSummaries(response.data);
+    } catch (error) {
+      console.error("Failed to fetch list summaries:", error);
+    }
   }
 
   function handleNewToDoList(newName) {
     const updateData = async () => {
-      const newListData = {
-        name: newName,
-      };
-
-      await axios.post("/api/lists", newListData);
-      reloadData().catch(console.error);
+      try {
+        const newListData = { name: newName };
+        await axios.post("/api/lists", newListData);
+        await reloadData();
+      } catch (error) {
+        console.error("Failed to add new to-do list:", error);
+      }
     };
     updateData();
   }
 
   function handleDeleteToDoList(id) {
     const updateData = async () => {
-      await axios.delete("/api/lists/${id}");
-      reloadData().catch(console.error);
+      try {
+        await axios.delete(`/api/lists/${id}`);
+        await reloadData();
+      } catch (error) {
+        console.error("Failed to delete to-do list:", error);
+      }
     };
     updateData();
   }
 
   function handleSelectList(id) {
+    if (!id) return;
     console.log("Selecting item", id);
     setSelectedItem(id);
   }
@@ -48,7 +57,7 @@ function App() {
     reloadData().catch(console.error);
   }
 
-  if (setSelectedItem === null) {
+  if (selectedItem === null) {
     return (
       <div className="App">
         <ListToDoList
