@@ -38,15 +38,7 @@ Insert in the file:
 ### Build and Run the App
 
 ```bash
-docker-compose pull
-```
-
-```bash
-docker-compose build
-```
-
-```bash
-docker-compose up
+docker-compose up --build
 ```
 
 ### Access the App
