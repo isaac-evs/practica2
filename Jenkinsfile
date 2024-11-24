@@ -35,9 +35,9 @@ pipeline {
 
         stage('Test') {
             steps {
-                // Increase the sleep time if necessary
+
                 sh 'sleep 20'
-                // Test the /api/dummy endpoint
+
                 sh '''
                     echo "Testing backend endpoint..."
                     RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8001/api/dummy)
@@ -60,7 +60,7 @@ pipeline {
 
     post {
         always {
-            // Clean up dangling images and containers
+
             sh 'docker system prune -f'
         }
     }
