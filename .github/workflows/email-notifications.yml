@@ -12,17 +12,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Send Email Notification
-      uses: dawidd6/action-send-mail@v3
-      with:
-        server_address: smtp.gmail.com
-        server_port: 587
-        username: ${{ secrets.EMAIL_USERNAME }}
-        password: ${{ secrets.EMAIL_PASSWORD }}
-        subject: 'Changes uploaded to ${{ github.ref_name }}'
-        body: 'Changes have been pushed to the ${{ github.ref_name }} branch in the repository.'
-        to: recipient@example.com
-        from: ${{ secrets.EMAIL_USERNAME }}
+      - name: Send Email Notification
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "Changes uploaded to ${{ github.ref_name }}"
+          body: "Changes have been pushed to the ${{ github.ref_name }} branch in the repository."
+          to: isaac.vazquez@iteso.mx
+          from: ${{ secrets.EMAIL_USERNAME }}
