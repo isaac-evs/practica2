@@ -1,49 +1,47 @@
 pipeline {
     agent any
 
-    environment {
-        GIT_CREDENTIALS_ID = '8aa54b10-9071-4cd8-af01-8ff2785c8bf8'
-        GIT_BRANCH = 'main'  // Branch to push changes to
-    }
-
     stages {
         stage('Checkout') {
             steps {
+
                 checkout scm
             }
         }
 
-        stage('Build and Test') {
+        stage('Build') {
             steps {
-                script {
-                    def buildResult = sh(script: 'docker-compose up --build --abort-on-container-exit', returnStatus: true)
 
-                    if (buildResult != 0) {
-                        error("Build or Tests Failed!")
-                    }
-                }
+                sh 'docker-compose build'
             }
         }
 
-        stage('Commit and Push Changes') {
-            when {
-                expression { currentBuild.result == null }
-            }
+        stage('Run') {
             steps {
-                script {
-                    sh '''
-                    git add .
-                    git commit -m "Automated commit: build successful"
-                    git push origin ${GIT_BRANCH}
-                    '''
-                }
+
+                sh 'docker-compose up -d'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'sleep 10'
+
+                // backend
+                sh 'curl -f http://localhost:8001/ || exit 1'
+            }
+        }
+
+        stage('Teardown') {
+            steps {
+                sh 'docker-compose down'
             }
         }
     }
 
     post {
-        failure {
-            echo "Build failed. No changes pushed."
+        always {
+            sh 'docker system prune -f'
         }
     }
 }
