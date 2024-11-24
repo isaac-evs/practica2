@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        // Adjust the PATH as needed for your system
         PATH = "/usr/local/bin:/usr/bin:/bin:${env.PATH}"
     }
 
@@ -18,40 +17,42 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                // Clone your repository
                 checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                // Build Docker images
                 sh 'docker-compose build'
             }
         }
 
         stage('Run') {
             steps {
-                // Start services in detached mode
                 sh 'docker-compose up -d'
             }
         }
 
         stage('Test') {
             steps {
-                // Wait for services to be ready
-                sh 'sleep 10'
-
-                // Simple test to check if backend is responding
-                sh 'curl -f http://localhost:8001/ || exit 1'
-
-                // (Optional) Add more tests as needed
+                // Increase the sleep time if necessary
+                sh 'sleep 20'
+                // Test the /api/dummy endpoint
+                sh '''
+                    echo "Testing backend endpoint..."
+                    RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8001/api/dummy)
+                    if [ "$RESPONSE" -ne 200 ]; then
+                        echo "Unexpected HTTP response code: $RESPONSE"
+                        exit 1
+                    else
+                        echo "Backend test successful. HTTP response code: $RESPONSE"
+                    fi
+                '''
             }
         }
 
         stage('Teardown') {
             steps {
-                // Stop and remove services
                 sh 'docker-compose down'
             }
         }
